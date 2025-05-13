@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     #region Declarations
+
+    public static event Action OnGameOver;
+    public static event Action OnWinScreen;
 
     [Header("References")]
     private bool isPause = false;
@@ -78,6 +82,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        OnGameOver?.Invoke();
         gameOverScreen.SetActive(true);
         gameUi.SetActive(false);
         player.enabled = false;
@@ -87,19 +92,25 @@ public class GameManager : MonoBehaviour
 
     public void WinScreen()
     {
+        OnWinScreen?.Invoke();
         winScreen.SetActive(true);
         player.enabled = false;
         Time.timeScale = 0f;
         isPause = true;
     }
-    //public void ShowCorn()
-    //{
-    //    StartCoroutine(GetCorn());
-    //}
-    //public IEnumerator GetCorn()
-    //{
-    //    uiManager.AddCorn();
-    //    yield return new WaitForSeconds(1);
 
-    //}
+    private void OnEnable()
+    {
+        Fox.OnFoxDied += HandleFoxDeath;
+    }
+
+    private void OnDisable()
+    {
+        Fox.OnFoxDied -= HandleFoxDeath;
+    }
+
+    private void HandleFoxDeath(Fox fox)
+    {
+        Debug.Log("dinner time!");
+    }
 }

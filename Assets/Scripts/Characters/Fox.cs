@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,7 +9,7 @@ public class Fox : MonoBehaviour, IDamageable
 
     #region Declarations
 
-
+    public static event Action<Fox> OnFoxDied;
     [Header("References")]
     private int hp = 100;
     private float minimumDis = 20;
@@ -49,6 +50,11 @@ public class Fox : MonoBehaviour, IDamageable
         }
     }
 
+    public Fox Clone()
+    {
+        Fox clone = Instantiate(this);
+        return clone;
+    }
     public void TakeDamage(int damage)
     {
         hp -= damage;
@@ -56,10 +62,9 @@ public class Fox : MonoBehaviour, IDamageable
         
         if(hp <= 0)
         {
+            OnFoxDied?.Invoke(this);
             Destroy(gameObject);
         }
     }
-
-
 
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -6,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamageable
 {
-
     #region Declarations
 
     [Header("References")]
@@ -34,6 +34,7 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private Chicken chicken;
     [SerializeField] private LayerMask chickenLayer;
     [SerializeField] private GameManager manager;
+    [SerializeField] private BulletPool bulletPool;
 
     private UIManager uiManager;
 
@@ -111,12 +112,13 @@ public class Player : MonoBehaviour, IDamageable
     void Shoot()
     {
         animator.SetTrigger("Attack");
-        GameObject newBullet = Instantiate(bulletPf, firePoint.position, transform.rotation);
-        newBullet.GetComponent<Bullet>().GoInDirection(firePoint.up);
 
+        GameObject bullet = bulletPool.GetBullet();
 
-        //dentro do milho
-        //OnTriggerEnter2D com galinha, dar comida
+        bullet.transform.position = firePoint.position;
+        bullet.transform.rotation = firePoint.rotation;
+
+        bullet.GetComponent<Bullet>().GoInDirection(firePoint.up);
     }
 
     void FaceDirection()

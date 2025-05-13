@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject foxPrefab;
+    [SerializeField] private Fox foxPrefab;
     private float foxSpawnRate = 40;
     private float foxSpawned = 0;
     private bool cooldown;
@@ -30,15 +31,19 @@ public class Spawner : MonoBehaviour
 
         Vector2 foxSpawnPos = new Vector2(randX,randY);
 
-        Instantiate(foxPrefab, foxSpawnPos, Quaternion.identity);
+        Fox clonedFox = foxPrefab.Clone();
+        clonedFox.transform.position = foxSpawnPos;
+        clonedFox.gameObject.SetActive(true);
 
-        foxSpawned = foxSpawned + 1;
+        //Instantiate(foxPrefab, foxSpawnPos, Quaternion.identity);
+
+        foxSpawned += 1;
     }
 
     private IEnumerator CoolDown()
     {
-            cooldown = true;
-            yield return new WaitForSeconds(2);
-            cooldown = false;
+        cooldown = true;
+        yield return new WaitForSeconds(2);
+        cooldown = false;
     }
 }

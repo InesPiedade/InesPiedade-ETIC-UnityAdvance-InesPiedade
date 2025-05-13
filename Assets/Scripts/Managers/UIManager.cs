@@ -63,12 +63,14 @@ public class UIManager : MonoBehaviour
     public void AddMeat()
     {
         meat++;
+        meat = Mathf.Clamp(meat, 0, 100);
         meatText.text = meat.ToString();
     }
 
     public void LessMeat()
     {
         meat--;
+        meat = Mathf.Clamp(meat, 0, 100);
         meatText.text = meat.ToString();
     }
 

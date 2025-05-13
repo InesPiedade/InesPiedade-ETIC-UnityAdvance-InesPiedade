@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class Chicken : MonoBehaviour, IDamageable, IInteractable
 {
 
     #region Declarations
+
+    public static event System.Action OnChiFed;
 
     [Header("References")]
     private int hp = 50;
@@ -118,6 +121,5 @@ public class Chicken : MonoBehaviour, IDamageable, IInteractable
             TakeDamage(50);
         }
     }
-
 
 }

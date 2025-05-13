@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
 
     [Header("Game Objects")]
     private Rigidbody2D rb;
+
+    private BulletPool bulletPool;
     #endregion
 
     private void Awake()
@@ -38,5 +40,17 @@ public class Bullet : MonoBehaviour
         {
             collidedCow.TakeDamage(damage);
         }
+    }
+
+    private void ReturnToPool()
+    {
+        gameObject.SetActive(false);
+
+        bulletPool.ReturnBullet(gameObject);
+    }
+
+    public void SetBulletPool(BulletPool pool)
+    {
+        bulletPool = pool;
     }
 }
