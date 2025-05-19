@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public static event Action OnGameOver;
     public static event Action OnWinScreen;
+    public enum Screens { Pause, GameOver, Win, GameUi }
+    private Dictionary<Screens, GameObject> organize;
 
     [Header("References")]
     private bool isPause = false;
@@ -30,6 +32,12 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindObjectOfType<Player>();
         uiManager = UIManager.instance;
+
+        organize = new Dictionary<Screens, GameObject>();
+        organize.Add(Screens.Pause, pauseMenu);
+        organize.Add(Screens.GameOver, gameOverScreen);
+        organize.Add(Screens.Win, winScreen);
+        organize.Add(Screens.GameUi, gameUi);
     }
     private void Update()
     {
@@ -46,10 +54,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     public void Resume()
     {
         pauseMenu.SetActive(false);
-        gameUi.SetActive(true);
+        ShowPanel(Screens.GameUi);
         player.enabled = true;
         Time.timeScale = 1f;
         isPause = false;
@@ -57,7 +66,7 @@ public class GameManager : MonoBehaviour
 
     public void Pause()
     {
-        pauseMenu.SetActive(true);
+        ShowPanel(Screens.Pause);
         gameUi.SetActive(false);
         player.enabled = false;
         Time.timeScale = 0f;
@@ -83,7 +92,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         OnGameOver?.Invoke();
-        gameOverScreen.SetActive(true);
+        ShowPanel(Screens.GameOver);
         gameUi.SetActive(false);
         player.enabled = false;
         Time.timeScale = 0f;
@@ -93,7 +102,7 @@ public class GameManager : MonoBehaviour
     public void WinScreen()
     {
         OnWinScreen?.Invoke();
-        winScreen.SetActive(true);
+        ShowPanel(Screens.Win);
         player.enabled = false;
         Time.timeScale = 0f;
         isPause = true;
@@ -113,4 +122,17 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("dinner time!");
     }
+
+    public void ShowPanel(Screens panelType)
+    {
+        foreach (var panel in organize.Values)
+        {
+            if (panel != null) panel.SetActive(false);
+        }
+        if (organize.ContainsKey(panelType) && organize[panelType] != null)
+        {
+            organize[panelType].SetActive(true);
+        }
+    }
+
 }
