@@ -153,7 +153,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         animator.SetTrigger("Death");
         player.enabled = false;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         manager.GameOver();
     }
 
