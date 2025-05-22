@@ -14,11 +14,11 @@ public class Player : MonoBehaviour, IDamageable
     private float speed = 5f;
     private bool isDead;
     private bool isInvincible;
-    private float damageCooldown = 2;
+    private float damageCooldown = 1;
     private bool isMoving;
     private float radius = 2f;
-    private int rayCount = 8;
-    private float detactionRange = 5;
+    //private int rayCount = 8;
+    //private float detactionRange = 5;
     private bool chiCheck;
 
     private Rigidbody2D rb;
@@ -90,22 +90,29 @@ public class Player : MonoBehaviour, IDamageable
 
     private void ChickenCheck()
     {
-        for (int i = 0; i < rayCount; i++)
+        Physics2D.CircleCast(transform.position, radius, Vector2.zero);
+        Collider2D[] HitObjects = Physics2D.OverlapCircleAll(transform.position, radius);
+
+        for (int i = 0; i < HitObjects.Length; ++i)
         {
-            float angle = i * (360f / rayCount) * Mathf.Deg2Rad;
-            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+            IInteractable interactable = HitObjects[i].transform.GetComponent<IInteractable>();
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, radius, chickenLayer);
-            Debug.DrawRay(transform.position, direction * radius, hit ? Color.red : Color.blue);
+            //float angle = i * (360f / rayCount) * Mathf.Deg2Rad;
+            //Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
-            if (hit)
+            //RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, radius, chickenLayer);
+            //Debug.DrawRay(transform.position, direction * radius, hit ? Color.red : Color.blue);
+
+            if (HitObjects[i] == null)
             {
-                IInteractable interactable = hit.transform.GetComponent<IInteractable>();
-                if (interactable != null)
-                {
-                    interactable.Interact();
-                }
+                continue;
             }
+            if (interactable != null)
+            {
+                interactable.Interact();
+            }
+
+            Debug.Log(HitObjects[i].gameObject.name);
         }
     }
 
@@ -145,24 +152,19 @@ public class Player : MonoBehaviour, IDamageable
         }
         else
         {
-            StartCoroutine(Invincible());
+            isDead = false;
         }
     }
 
     private IEnumerator Death()
     {
         animator.SetTrigger("Death");
-        player.enabled = false;
+
         yield return new WaitForSeconds(0.5f);
         manager.GameOver();
+        Time.timeScale = 0f;
     }
 
-    private IEnumerator Invincible()
-    {
-        isInvincible = true;
-        yield return new WaitForSeconds(damageCooldown);
-        isInvincible = false;
-    }
 
     public void RestoreHp(int value)
     {
@@ -178,7 +180,7 @@ public class Player : MonoBehaviour, IDamageable
         Fox fox = collision.transform.GetComponent<Fox>();
         if (fox != null)
         {
-            TakeDamage(50);
+            TakeDamage(20);
         }
     }
 

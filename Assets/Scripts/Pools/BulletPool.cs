@@ -37,10 +37,16 @@ public class BulletPool : MonoBehaviour
         }
         else
         {
-            GameObject bullet = Instantiate(bulletPrefab);
-            bullet.GetComponent<Bullet>().SetBulletPool(this);
-            return bullet;
+            GameObject GenerateBullet = GenerateObject(bulletPrefab);
+            return GenerateBullet; 
         }
+    }
+
+    public GameObject GenerateObject(GameObject PrefabToCreatebullet)
+    {
+        GameObject bullet = Instantiate(PrefabToCreatebullet);
+        bullet.GetComponent<Bullet>().SetBulletPool(this);
+        return bullet;
     }
 
     public void ReturnBullet(GameObject bullet)

@@ -15,9 +15,9 @@ public class Fox : MonoBehaviour, IDamageable
     private float minimumDis = 20;
     private float speed = 1;
     private float cooldownTimer = 2;
-    //private int damageOnContact = 5;
     private bool onCoolDown;
     private float timer;
+    private FoxPool foxPool;
 
     [SerializeField] private Transform target;
 
@@ -67,4 +67,14 @@ public class Fox : MonoBehaviour, IDamageable
         }
     }
 
+    private void ReturnToPool()
+    {
+        gameObject.SetActive(false);
+        foxPool.ReturnFox(gameObject);
+    }
+
+    public void SetFoxPool(FoxPool pool)
+    {
+        foxPool = pool;
+    }
 }

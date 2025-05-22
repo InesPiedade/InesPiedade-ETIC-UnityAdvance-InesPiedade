@@ -9,8 +9,8 @@ public class Corn : MonoBehaviour, ICollectable
 
     private UIManager uiManager;
     private GameManager manager;
-    private float timer = 0f;
-    private float offsetTime = 2f;
+    //private float timer = 0f;
+    //private float offsetTime = 2f;
 
 
     #endregion
