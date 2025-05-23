@@ -35,8 +35,6 @@ public class Spawner : MonoBehaviour
         clonedFox.transform.position = foxSpawnPos;
         clonedFox.gameObject.SetActive(true);
 
-        //Instantiate(foxPrefab, foxSpawnPos, Quaternion.identity);
-
         foxSpawned += 1;
     }
 

@@ -17,8 +17,6 @@ public class Player : MonoBehaviour, IDamageable
     private float damageCooldown = 1;
     private bool isMoving;
     private float radius = 2f;
-    //private int rayCount = 8;
-    //private float detactionRange = 5;
     private bool chiCheck;
 
     private Rigidbody2D rb;
@@ -96,12 +94,6 @@ public class Player : MonoBehaviour, IDamageable
         for (int i = 0; i < HitObjects.Length; ++i)
         {
             IInteractable interactable = HitObjects[i].transform.GetComponent<IInteractable>();
-
-            //float angle = i * (360f / rayCount) * Mathf.Deg2Rad;
-            //Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-
-            //RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, radius, chickenLayer);
-            //Debug.DrawRay(transform.position, direction * radius, hit ? Color.red : Color.blue);
 
             if (HitObjects[i] == null)
             {

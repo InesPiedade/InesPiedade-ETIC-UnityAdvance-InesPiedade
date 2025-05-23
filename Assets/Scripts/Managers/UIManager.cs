@@ -26,7 +26,6 @@ public class UIManager : MonoBehaviour
     private int feedChi;
     private int meat;
     private int seeds;
-    //private int amountToRestore = 50;
 
     private Player player;
     private Corn cornScript;

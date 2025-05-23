@@ -25,7 +25,6 @@ public class Meat : MonoBehaviour
     private IEnumerator Cooldown()
     {
         yield return new WaitForSeconds(1);
-        //uiManager.AddMeat();
         Destroy(gameObject);
         uiManager.AddMeat();
 
